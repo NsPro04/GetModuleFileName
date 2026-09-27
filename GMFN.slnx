@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="GMFN-test/GMFN-test.vcxproj" />
+  <Project Path="GMFN/GMFN.vcxproj" />
+</Solution>

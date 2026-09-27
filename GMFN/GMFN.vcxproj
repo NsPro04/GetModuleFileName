@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\GMFN\GMFN.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <PlatformToolset>ClangCL</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ProjectGuid>{0C15E2C7-3145-E996-6294-EBB780652A58}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <SolutionOutDir>$(SolutionDir)\dist\$(Configuration)\Bin\</SolutionOutDir>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)\build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)\build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>NotSet</SubSystem>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+    <CustomBuildStep>
+      <Command>
+        IF EXIST "$(ProjectDir)\p\$(Configuration)" (rmdir /S /Q "$(ProjectDir)\p\$(Configuration)")
+
+        IF NOT EXIST "$(ProjectDir)\p" (mkdir "$(ProjectDir)\p")
+        mkdir "$(ProjectDir)\p\$(Configuration)"
+        mkdir "$(ProjectDir)\p\$(Configuration)\lib"
+        mkdir "$(ProjectDir)\p\$(Configuration)\bin"
+        IF NOT EXIST "$(SolutionOutDir)" (mkdir "$(SolutionOutDir)")
+
+        mklink /J "$(ProjectDir)\p\$(Configuration)\include" "$(ProjectDir)\include"
+
+        mklink /H "$(ProjectDir)\p\$(Configuration)\lib\$(TargetName).lib" "$(OutDir)$(TargetName).lib"
+
+                                               mklink /H "$(ProjectDir)\p\$(Configuration)\bin\$(TargetName)$(TargetExt)" "$(OutDir)$(TargetName)$(TargetExt)"
+        IF EXIST "$(OutDir)$(TargetName).pdb" (mklink /H "$(ProjectDir)\p\$(Configuration)\bin\$(TargetName).pdb"         "$(OutDir)$(TargetName).pdb")
+
+
+
+        IF EXIST "$(SolutionOutDir)\$(TargetName)$(TargetExt)" (del "$(SolutionOutDir)\$(TargetName)$(TargetExt)")
+        IF EXIST "$(SolutionOutDir)\$(TargetName).pdb"         (del "$(SolutionOutDir)\$(TargetName).pdb")
+
+                                               mklink /H "$(SolutionOutDir)\$(TargetName)$(TargetExt)" "$(OutDir)$(TargetName)$(TargetExt)"
+        IF EXIST "$(OutDir)$(TargetName).pdb" (mklink /H "$(SolutionOutDir)\$(TargetName).pdb"         "$(OutDir)$(TargetName).pdb")
+      </Command>
+      <Inputs>$(OutDir)$(TargetName)$(TargetExt)</Inputs>
+      <Outputs>$(SolutionOutDir)\$(TargetName)$(TargetExt)</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(SolutionDir)\third_party\conan\conandeps.props')" Project="$(SolutionDir)\third_party\conan\conandeps.props" />
+  </ImportGroup>
+</Project>
