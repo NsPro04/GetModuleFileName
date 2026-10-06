@@ -1,4 +1,7 @@
-﻿#define GMFN_EXPORTS
+﻿#ifndef GMFN_EXPORTS
+#  define GMFN_EXPORTS
+#endif // !GMFN_EXPORTS
+
 #include <GMFN/GMFN.h>
 
 #include <windows.h>
