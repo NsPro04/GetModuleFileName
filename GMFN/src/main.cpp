@@ -17,7 +17,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
     const DWORD old_error_code = ::GetLastError();
 
     while (true) {
-      const DWORD path_size  = ::GetModuleFileNameW(static_cast<HMODULE>(hModule), path_wstr.data(), path_wstr.size());
+      const DWORD path_size  = ::GetModuleFileNameW(static_cast<HMODULE>(hModule), path_wstr.data(), static_cast<DWORD>(path_wstr.size()));
       const DWORD error_code = ::GetLastError();
       ::SetLastError(old_error_code);
 
@@ -51,7 +51,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
     const DWORD old_error_code = ::GetLastError();
 
     while (true) {
-      const DWORD path_size  = ::K32GetModuleFileNameExW(reinterpret_cast<HANDLE>(process), static_cast<HMODULE>(hModule), path_wstr.data(), path_wstr.size());
+      const DWORD path_size  = ::K32GetModuleFileNameExW(reinterpret_cast<HANDLE>(process), static_cast<HMODULE>(hModule), path_wstr.data(), static_cast<DWORD>(path_wstr.size()));
       const DWORD error_code = ::GetLastError();
       ::SetLastError(old_error_code);
 
@@ -60,7 +60,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
       }
 
       // https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexw
-      if ((path_size + /*(windows_version >= 10)*/ 1) < path_wstr.size()) {
+      if ((path_size + /*(windows_version >= 10)*/ 1uz) < path_wstr.size()) {
         path_wstr.erase(path_size);
         break;
       }
