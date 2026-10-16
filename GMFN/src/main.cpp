@@ -1,6 +1,6 @@
 ﻿#ifndef GMFN_EXPORTS
 #  define GMFN_EXPORTS
-#endif // !GMFN_EXPORTS
+#endif // GMFN_EXPORTS
 
 #include <GMFN/GMFN.h>
 
