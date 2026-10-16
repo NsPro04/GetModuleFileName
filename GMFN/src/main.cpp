@@ -4,6 +4,7 @@
 
 #include <GMFN/GMFN.h>
 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <psapi.h>
 
@@ -16,7 +17,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
     const DWORD old_error_code = ::GetLastError();
 
     while (true) {
-      const DWORD path_size  = ::GetModuleFileNameW(reinterpret_cast<HMODULE>(hModule), path_wstr.data(), path_wstr.size());
+      const DWORD path_size  = ::GetModuleFileNameW(static_cast<HMODULE>(hModule), path_wstr.data(), path_wstr.size());
       const DWORD error_code = ::GetLastError();
       ::SetLastError(old_error_code);
 
@@ -50,7 +51,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
     const DWORD old_error_code = ::GetLastError();
 
     while (true) {
-      const DWORD path_size  = ::K32GetModuleFileNameExW(reinterpret_cast<HANDLE>(process), reinterpret_cast<HMODULE>(hModule), path_wstr.data(), path_wstr.size());
+      const DWORD path_size  = ::K32GetModuleFileNameExW(reinterpret_cast<HANDLE>(process), static_cast<HMODULE>(hModule), path_wstr.data(), path_wstr.size());
       const DWORD error_code = ::GetLastError();
       ::SetLastError(old_error_code);
 
