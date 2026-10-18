@@ -54,6 +54,5 @@ if (GMFN_INSTALL)
     install(EXPORT GMFN
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
             NAMESPACE GMFN::
-            COMPONENT devel
-    )
+            COMPONENT devel)
 endif ()
