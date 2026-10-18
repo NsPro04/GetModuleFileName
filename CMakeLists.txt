@@ -3,6 +3,7 @@
 project(GMFN VERSION 1.0.0 LANGUAGES CXX)
 
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
 
 if (NOT WIN32 OR NOT MSVC)
     message(FATAL_ERROR "${PROJECT_NAME} requires Windows and an MSVC-compatible compiler.")
@@ -54,5 +55,18 @@ if (GMFN_INSTALL)
     install(EXPORT GMFN
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
             NAMESPACE GMFN::
+            COMPONENT devel)
+
+    file(WRITE
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+            "include(\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}.cmake)\n")
+    write_basic_package_version_file(
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+            COMPATIBILITY AnyNewerVersion)
+
+    install(FILES
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
             COMPONENT devel)
 endif ()
