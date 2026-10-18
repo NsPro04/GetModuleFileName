@@ -11,10 +11,10 @@
 #include <string>
 
 GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32GetModuleFileName(void *hModule) noexcept {
+  const DWORD old_error_code = ::GetLastError();
+
   try {
     std::wstring path_wstr(MAX_PATH, L'\0');
-
-    const DWORD old_error_code = ::GetLastError();
 
     while (true) {
       const DWORD path_size  = ::GetModuleFileNameW(static_cast<HMODULE>(hModule), path_wstr.data(), static_cast<DWORD>(path_wstr.size()));
@@ -33,10 +33,9 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
       path_wstr.resize(path_wstr.size() + MAX_PATH, L'\0');
     }
 
-    std::filesystem::path tmp = std::move(path_wstr);
-
-    return std::move(tmp);
+    return path_wstr;
   } catch (...) {
+    ::SetLastError(old_error_code);
     return std::unexpected(ERROR_NOT_ENOUGH_MEMORY);
   }
 }
@@ -45,10 +44,10 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
   if (process == nullptr)
     process = ::GetCurrentProcess();
 
+  const DWORD old_error_code = ::GetLastError();
+
   try {
     std::wstring path_wstr(MAX_PATH, L'\0');
-
-    const DWORD old_error_code = ::GetLastError();
 
     while (true) {
       const DWORD path_size  = ::K32GetModuleFileNameExW(reinterpret_cast<HANDLE>(process), static_cast<HMODULE>(hModule), path_wstr.data(), static_cast<DWORD>(path_wstr.size()));
@@ -68,10 +67,9 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
       path_wstr.resize(path_wstr.size() + MAX_PATH, L'\0');
     }
 
-    std::filesystem::path tmp = std::move(path_wstr);
-
-    return std::move(tmp);
+    return path_wstr;
   } catch (...) {
+    ::SetLastError(old_error_code);
     return std::unexpected(ERROR_NOT_ENOUGH_MEMORY);
   }
 }
