@@ -2,8 +2,8 @@
 
 GMFN is a small C++23 library that provides exception-free wrappers for retrieving the file path of a loaded Windows module. It exposes two functions:
 
-- `K32GetModuleFileName` — retrieves the path of a module in the current process.
-- `K32GetModuleFileNameEx` — retrieves the path of a module from a specified process, or from the current process by default.
+- `K32GetModuleFileName` — a wrapper around the WinAPI `GetModuleFileNameW` function that retrieves the path of a module in the current process.
+- `K32GetModuleFileNameEx` — a wrapper around the WinAPI `K32GetModuleFileNameExW` function that retrieves the path of a module from a specified process, or from the current process by default.
 
 Both functions are marked `noexcept` and return `std::expected<std::filesystem::path, WIN_DWORD>`. On success, the module path is returned as a `std::filesystem::path`. WinAPI failures are reported through `std::unexpected` using the error code obtained from `GetLastError`.
 
