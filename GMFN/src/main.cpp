@@ -58,7 +58,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
         return std::unexpected(error_code);
       }
 
-      // https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexw
+      // https://github.com/MicrosoftDocs/sdk-api/blob/docs/sdk-api-src/content/psapi/nf-psapi-getmodulefilenameexw.md#-returns
       if ((path_size + /*(windows_version >= 10)*/ 1uz) < path_wstr.size()) {
         path_wstr.erase(path_size);
         break;
