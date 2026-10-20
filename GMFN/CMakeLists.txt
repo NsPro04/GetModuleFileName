@@ -8,6 +8,12 @@ target_include_directories(GMFN PUBLIC
 
 target_compile_definitions(GMFN PRIVATE "_UNICODE" "UNICODE")
 
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(GMFN INTERFACE GMFN_NO_AUTO_LINK)
+else ()
+    target_compile_definitions(GMFN PUBLIC GMFN_STATIC_LIB)
+endif ()
+
 target_compile_options(GMFN PRIVATE "/W4" $<$<BOOL:${GMFN_STRICT}>:/WX>)
 
 target_link_options(GMFN PRIVATE "/MANIFEST:NO")
