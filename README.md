@@ -12,3 +12,20 @@ The implementation does not propagate C++ exceptions. Allocation failures, which
 The previous thread-local last-error value is saved and restored before every return, so the functions do not alter the caller's WinAPI error state or leave observable side effects behind.
 
 Module paths are collected using a dynamically growing buffer rather than a fixed-size `MAX_PATH` buffer. This allows the functions to handle paths longer than `MAX_PATH`, including Windows long paths.
+
+## Example
+
+```cpp
+#include <GMFN/GMFN.h>
+
+#include <print>
+
+int main() {
+    std::println("K32GetModuleFileName: {}",   GMFN::K32GetModuleFileName().value().string());
+    std::println("K32GetModuleFileNameEx: {}", GMFN::K32GetModuleFileNameEx().value().string());
+
+    std::cout << std::endl;
+
+    return 0;
+}
+```
