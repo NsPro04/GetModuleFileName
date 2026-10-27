@@ -31,6 +31,11 @@ if (GMFN_INSTALL)
                 COMPONENT runtime
     )
 
+    install(EXPORT GMFN
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+            NAMESPACE GMFN::
+            COMPONENT devel)
+
     if (BUILD_SHARED_LIBS)
         install(FILES $<TARGET_PDB_FILE:GMFN>
                 TYPE BIN
