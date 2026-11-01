@@ -13,7 +13,29 @@ The previous thread-local last-error value is saved and restored before every re
 
 Module paths are collected using a dynamically growing buffer rather than a fixed-size `MAX_PATH` buffer. This allows the functions to handle paths longer than `MAX_PATH`, including Windows long paths.
 
-## Example
+## Usage
+
+### CMake
+
+#### FetchContent
+
+If you already have a CMake project, you can integrate GMFN using `FetchContent`.
+Add the following to your `CMakeLists.txt`:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(GMFN GIT_REPOSITORY https://github.com/NsPro04/GetModuleFileName.git GIT_TAG "v1.0.2")
+FetchContent_MakeAvailable(GMFN)
+```
+
+This makes the `GMFN::GMFN` target available for linking:
+
+```cmake
+target_link_libraries(your_target_name PRIVATE GMFN::GMFN)
+```
+
+### C++
 
 ```cpp
 #include <GMFN/GMFN.h>
