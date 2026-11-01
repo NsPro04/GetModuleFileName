@@ -1,8 +1,4 @@
-﻿#ifndef GMFN_EXPORTS
-#  define GMFN_EXPORTS
-#endif // GMFN_EXPORTS
-
-#include <GMFN/GMFN.h>
+﻿#include <GMFN/GMFN.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
