@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 4.3.1)
 
-project(GMFN VERSION 1.0.0 LANGUAGES CXX)
+project(GMFN VERSION 1.0.2 LANGUAGES CXX)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)

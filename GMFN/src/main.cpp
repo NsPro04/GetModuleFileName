@@ -37,10 +37,10 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
 }
 
 GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32GetModuleFileNameEx(void *hModule, void *process) noexcept {
+  const DWORD old_error_code = ::GetLastError();
+
   if (process == nullptr)
     process = ::GetCurrentProcess();
-
-  const DWORD old_error_code = ::GetLastError();
 
   try {
     std::wstring path_wstr(MAX_PATH, L'\0');
