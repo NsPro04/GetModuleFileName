@@ -46,7 +46,7 @@ GMFN_API std::expected<std::filesystem::path, GMFN::v1::WIN_DWORD> GMFN::v1::K32
     std::wstring path_wstr(MAX_PATH, L'\0');
 
     while (true) {
-      const DWORD path_size  = ::K32GetModuleFileNameExW(reinterpret_cast<HANDLE>(process), static_cast<HMODULE>(hModule), path_wstr.data(), static_cast<DWORD>(path_wstr.size()));
+      const DWORD path_size  = ::K32GetModuleFileNameExW(static_cast<HANDLE>(process), static_cast<HMODULE>(hModule), path_wstr.data(), static_cast<DWORD>(path_wstr.size()));
       const DWORD error_code = ::GetLastError();
       ::SetLastError(old_error_code);
 
